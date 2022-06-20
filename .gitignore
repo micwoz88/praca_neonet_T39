@@ -1,0 +1,5 @@
+*.docx
+*.log
+/img
+/neonet_T39
+/__pycache__
