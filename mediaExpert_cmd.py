@@ -99,7 +99,7 @@ try:
     #dodaj podtytul
     podtytul = podstrona.find(class_='product_title l').get_text().strip()
     
-    data_waznosci = f'Promocyjną cenę gwarantujemy w dniu {f.data.day}.{f.data.month}.{f.data.year} r. w godzinach 00:00 – 23:59'
+    data_waznosci = f'Promocyjną cenę gwarantujemy w dniu {str(f.data.day).zfill(2)}.{(f.data.month).zfill(2)}.{f.data.year} r. w godzinach 00:00 – 23:59'
     f.dodaj_rekord(tytul,adres,2,podtytul,data_waznosci)
 
     ban_img = f.Image.open(f'img/{f.nazwa_sklepu}.png')
