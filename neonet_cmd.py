@@ -2,21 +2,24 @@ import funkcje as f
 
 def podaj_czas(podstrona):
     try:
-        pattern_termin = f.re.compile(r'(Promoc(ja|yjną)|Akcja).{,200}(obowiązuje|trwa)?.{,200}do.{,200}\d\d:\d\d', f.re.S)
+        pattern_termin = f.re.compile(r'(Promoc(ja|yjną)|Akcja).{,200}(obowiązuje|trwa)?.{,200}do.{,200}(\d\d:\d\d|\d\d\.\d\d\.\d\d\d\d r\.)', f.re.S)
         czas = pattern_termin.search(str(podstrona))
         czas = str(podstrona)[czas.start():czas.end()]
         czas = f.re.sub(r'[ ]?(<|</)b>[ ]?', ' ', czas)
         czas = f.re.sub(r'\n', ' ', czas)
         czas = f.re.sub(r' ,', ',', czas)
+        pattern_tag = f.re.compile('<.*?>')
+        czas = pattern_tag.sub('', czas)
     except:
         czas = ''
     return czas
 
 def podaj_regulamin(podstrona):
     try:
-        pattern_reg_link = f.re.compile(r'http\S*?\.pdf')
+        pattern_reg_link = f.re.compile(r'(http|/)\S*?\.pdf')
         regulamin_link = pattern_reg_link.search(str(podstrona))
         regulamin_link = str(podstrona)[regulamin_link.start():regulamin_link.end()]
+        regulamin_link = f.dodaj_https(regulamin_link)
         pomin = ['https://www.neonet.pl/images24/promocje/2022/listy/Regulamin-opinii-V4_po-uwzglednieniu-poprawek.pdf']
         for link in pomin:
             if link == regulamin_link:
