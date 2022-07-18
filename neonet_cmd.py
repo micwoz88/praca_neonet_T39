@@ -10,6 +10,8 @@ def podaj_czas(podstrona):
         czas = f.re.sub(r' ,', ',', czas)
         pattern_tag = f.re.compile('<.*?>')
         czas = pattern_tag.sub('', czas)
+        pattern_spacja = f.re.compile(' +')
+        czas = pattern_spacja.sub(' ', czas)
     except:
         czas = ''
     return czas
