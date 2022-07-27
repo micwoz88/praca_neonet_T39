@@ -54,6 +54,43 @@ for ban in range(0,len(top_banner_tytuly)):
     print(f'baner - {f.nr_banera} - jest')
 
 #---------------------------------------------------------------------------------------
+#-------------------------- Promocje wybrane dla Ciebie---------------------------------
+#---------------------------------------------------------------------------------------
+Promocje_wybrane_dla_Ciebie = kod_zrodlowy.find(id='HomePage:LPRecommendations').find_all(class_='offer')
+
+for ban in Promocje_wybrane_dla_Ciebie:
+    adres = ban.find_all('a')[0]['href']
+    podstrona = f.pobierz_kod_selenium(adres)
+    tytul = podstrona.find('title').get_text()
+    
+    if podstrona.find(class_='sg_ft_in'):
+        #------------------------------------------------------------
+        wynik = podstrona.find(class_='sg_ft_in')
+        try:
+            regulamin = wynik.find_all('a')[0]['href']
+            if regulamin == 'https://www.mediaexpert.pl':
+                regulamin = ''
+            czas_trwania = wynik.get_text()[wynik.get_text().find('Akcja') - 1:wynik.get_text().find(' lub do')].strip()
+            if len(czas_trwania) > 300:
+                czas_trwania = ''
+        #------------------------------------------------------------  
+        except:
+            czas_trwania = ''
+            regulamin = ''
+    else:
+        czas_trwania = ''
+        regulamin = ''
+
+    f.dodaj_rekord(tytul,adres,2,czas_trwania=czas_trwania,regulamin=regulamin)
+
+    adres_img = f.dodaj_https(ban.find('img')['src'])
+    roz_img = f.rozszerzenie_img(adres_img)
+    f.zapisz_grafike(adres_img,roz_img,f.nr_banera)
+    f.konwertuj_do_png(f.nr_banera,roz_img)
+
+    print(f'baner - {f.nr_banera} - jest')
+
+#---------------------------------------------------------------------------------------
 #--------------------------baner II rzad------------------------------------------------
 #---------------------------------------------------------------------------------------
 baner_rzad_2 = kod_zrodlowy.find(id='section_banners-top').find_all(class_='spark-link')
